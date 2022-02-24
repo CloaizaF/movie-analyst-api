@@ -21,6 +21,20 @@ function getMovies(callback) {
   );
 }
 
+function getReviewers(callback) {
+  connection.query("SELECT * FROM movie_db.reviewer",
+    function (err, rows) {
+      callback(err, rows);
+    }
+  );
+}
+// Implement the reviewers API endpoint
+app.get('/reviewers', function (req, res, next) {
+  getReviewers(function (err, reviewersResult) {
+    res.json(reviewersResult);
+  });
+})
+
 //Testing endpoint
 app.get('/', function (req, res) {
   var response = [{ response: 'hello' }, { code: '200' }]
