@@ -42,7 +42,18 @@ function getPublications(callback) {
   );
 }
 
-//Implement the testing API endpoint
+// Get the pending reviews from the DB
+function getPending(callback) {
+  connection.query( "SELECT moviereview.title, moviereview.release, moviereview.score, moviereview.reviewer, reviewer.publication " +
+                    "FROM movie_db.moviereview " + 
+                    "INNER JOIN movie_db.reviewer ON moviereview.reviewer = reviewer.name;",
+    function (err, rows) {
+      callback(err, rows);
+    }
+  );
+}
+
+// Implement the testing API endpoint
 app.get('/', function (req, res) {
   var response = [{ response: 'hello' }, { code: '200' }]
   res.json(response);
@@ -57,7 +68,6 @@ app.get('/movies', function (req, res, next) {
 
   });
 });
-
 
 // Implement the reviewers API endpoint
 app.get('/reviewers', function (req, res, next) {
@@ -74,15 +84,11 @@ app.get('/publications', function (req, res, next) {
 })
 
 // Implement the pending reviews API endpoint
-/*
-app.get('/pending', function (req, res) {
-  var pending = [
-    { title: 'Superman: Homecoming', release: 'jh', score: 10, reviewer: 'Chris Harris', publication: 'International Movie Critic' },
-    { title: 'Wonder Woman', release: '2017', score: 8, reviewer: 'Martin Thomas', publication: 'TheOne' },
-    { title: 'Doctor Strange', release: '2016', score: 7, reviewer: 'Anthony Miller', publication: 'ComicBookHero.com' }
-  ]
-  res.json(pending);
-})*/
+app.get('/pending', function (req, res, next) {
+  getPending(function (err, pendingResult) {
+    res.json(pendingResult);
+  });
+})
 
 console.log("server listening through port: " + process.env.PORT);
 // Launch our API Server and have it listen on port 3000.
