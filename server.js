@@ -16,7 +16,7 @@ connection.connect();
 // Get the movies from the DB
 function getMovies(callback) {
   connection.query( "SELECT moviereview.title, moviereview.release, moviereview.score, moviereview.reviewer, reviewer.name, reviewer.publication " + 
-                    "FROM movie_db.movierevier " + 
+                    "FROM movie_db.moviereviewer " + 
                     "INNER JOIN movie_db.reviewer ON moviereview.reviewer = reviewer.name;",
     function (err, rows) {
       callback(err, rows);
@@ -68,7 +68,7 @@ app.get('/reviewers', function (req, res, next) {
 
 // Implement the publications API endpoint
 app.get('/publications', function (req, res, next) {
-  getReviewers(function (err, publicationsResult) {
+  getPublications(function (err, publicationsResult) {
     res.json(publicationsResult);
   });
 })
