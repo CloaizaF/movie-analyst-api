@@ -16,7 +16,7 @@ connection.connect();
 // Get the movies from the DB
 function getMovies(callback) {
   connection.query( "SELECT moviereview.title, moviereview.release, moviereview.score, moviereview.reviewer, reviewer.name, reviewer.publication " + 
-                    "FROM movie_db.moviereviewer " + 
+                    "FROM movie_db.moviereview " + 
                     "INNER JOIN movie_db.reviewer ON moviereview.reviewer = reviewer.name;",
     function (err, rows) {
       callback(err, rows);
